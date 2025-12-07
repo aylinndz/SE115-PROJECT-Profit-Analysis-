@@ -68,4 +68,39 @@ public class Main {
             System.out.println("File not found or I/O error: " + e.getMessage());
         }
     }
+    // 10 REQUIRED METHODS  ========
+
+    public static String mostProfitableCommodityInMonth(int month) {
+        return "DUMMY";
+    }
+
+    public static int totalProfitOnDay(int month, int day) {
+        return 1234;
+    }
+
+    public static int commodityProfitInRange(String commodity, int from, int to) {
+        int commIndex = -1;
+        for (int i = 0; i < COMMS; i++) {
+            if (commodities[i].equals(commodity)) {
+                commIndex = i;
+                break;
+            }
+        }
+        if (commIndex == -1 || from < 1 || from > DAYS || to < 1 || to > DAYS || from > to) {
+            return -99999;
+        }
+        long totalProfit = 0;
+
+        int fromIndex = from - 1;
+        int toIndex = to - 1;
+
+        //12 month
+        for (int m = 0; m < MONTHS; m++) {
+            //day
+            for (int d = fromIndex; d <= toIndex; d++) {
+                totalProfit += profitData[m][d][commIndex];
+            }
+        }
+        return (int) totalProfit;
+    }
 }
