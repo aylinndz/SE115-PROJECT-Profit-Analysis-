@@ -1,4 +1,3 @@
-// Main.java — Students version copy
 import java.io.*;
 import java.util.*;
 import java.util.Scanner;
@@ -68,7 +67,7 @@ public class Main {
             System.out.println("File not found or I/O error: " + e.getMessage());
         }
     }
-    // 10 REQUIRED METHODS  ========
+    // 10 REQUIRED METHODS
 
     public static String mostProfitableCommodityInMonth(int month) {
         return "DUMMY";
@@ -103,4 +102,23 @@ public class Main {
         }
         return (int) totalProfit;
     }
+    public static int bestDayOfMonth(int month) {
+        return 1234;
+    }
+
+    public static String bestMonthForCommodity(String comm) {
+        return "DUMMY";
+    }
+
+    public static int consecutiveLossDays(String comm) {
+        int commIndex = -1;
+        for (int i = 0; i < COMMS; i++) {
+            if (commodities[i].equals(comm)) {
+                commIndex = i;
+                break;
+            }
+        }
+        if (commIndex == -1) {
+            return -1;
+        }
 }
