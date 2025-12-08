@@ -121,4 +121,29 @@ public class Main {
         if (commIndex == -1) {
             return -1;
         }
+        int maxStreak = 0;
+        int currentStreak = 0;
+
+        //for 12 month:
+        for (int m = 0; m < MONTHS; m++) {
+            //for 28 day
+            for (int d = 0; d < DAYS; d++) {
+                int profit = profitData[m][d][commIndex]; // Arrays
+
+                if (profit < 0) {
+                    currentStreak++;
+                } else {
+                    if (currentStreak > maxStreak) {
+                        maxStreak = currentStreak;
+                    }
+                    currentStreak = 0;
+                }
+            }
+        }
+        if (currentStreak > maxStreak) {
+            maxStreak = currentStreak;
+        }
+
+        return maxStreak;
+    }
 }
