@@ -91,8 +91,18 @@ public class Main {
         return mostProfitableComm + " " + maxProfit;
     }
 
-    public static int totalProfitOnDay(int month, int day) {
-        return 1234;
+   public static int totalProfitOnDay(int month, int day) {
+
+        if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) {
+            return -99999;
+        }
+        int totalProfit = 0;
+        int dayIndex = day - 1;
+
+        for (int i = 0; i < COMMS; i++) { // commodity index
+            totalProfit += profitData[month][dayIndex][i];
+        }
+        return totalProfit;
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
