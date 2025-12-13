@@ -70,7 +70,25 @@ public class Main {
     // 10 REQUIRED METHODS
 
     public static String mostProfitableCommodityInMonth(int month) {
-        return "DUMMY";
+        if (month < 0 || month >= MONTHS) {
+            return "INVALID_MONTH";
+        }
+        long maxProfit = Long.MIN_VALUE;
+            String mostProfitableComm = " ";
+
+        for (int i = 0; i < COMMS; i++) {// commodity index
+            long currentCommProfit = 0;
+
+            for (int j = 0; j < DAYS; j++) {// day index
+                currentCommProfit += profitData[month][j][i];
+            }
+            // most profitable
+            if (currentCommProfit > maxProfit) {
+                maxProfit = currentCommProfit;
+                mostProfitableComm = commodities[i];
+            }
+        }
+        return mostProfitableComm + " " + maxProfit;
     }
 
     public static int totalProfitOnDay(int month, int day) {
