@@ -154,8 +154,38 @@ public class Main {
 
    
     
-    public static String bestMonthForCommodity(String comm) {
-        return "DUMMY";
+   public static String bestMonthForCommodity(String comm) {
+        int commIndex = -1;
+        for (int i = 0; i < COMMS; i++) {
+            if (commodities[i].equals(comm)) {
+                commIndex = i;
+                break;
+            }
+        }
+        if (commIndex == -1) {
+            return "INVALID_COMMODITY";
+        }
+        //1st month:
+        long firstMonthProfit = 0;
+        for (int j = 0; j < DAYS; j++) {
+            firstMonthProfit += profitData[0][j][commIndex];
+        }
+
+        long maxProfit = firstMonthProfit;
+        String bestMonthName = months[0]; 
+
+        for (int i = 1; i < MONTHS; i++) {
+            long currentMonthProfit = 0;
+            for (int j = 0; j < DAYS; j++) {
+                currentMonthProfit += profitData[i][j][commIndex];
+            }
+
+            if (currentMonthProfit > maxProfit) {
+                maxProfit = currentMonthProfit;
+                bestMonthName = months[i];
+            }
+        }
+        return bestMonthName;
     }
 
     
