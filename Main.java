@@ -67,7 +67,7 @@ public class Main {
     }
     // 10 REQUIRED METHODS
 
-    public static String mostProfitableCommodityInMonth(int month) {
+    public static String mostProfitableCommodityInMonth(int month) {//1
         if (month < 0 || month >= MONTHS) {
             return "INVALID_MONTH";
         }
@@ -90,7 +90,7 @@ public class Main {
     }
 
    
-    public static int totalProfitOnDay(int month, int day) {
+    public static int totalProfitOnDay(int month, int day) {//2
         if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) {
             return -99999;
         }
@@ -104,7 +104,7 @@ public class Main {
     }
 
    
-    public static int commodityProfitInRange(String commodity, int from, int to) {
+    public static int commodityProfitInRange(String commodity, int from, int to) {//3
         int commIndex = -1;
         for (int i = 0; i < COMMS; i++) {
             if (commodities[i].equals(commodity)) {
@@ -131,7 +131,7 @@ public class Main {
     }
    
     
-    public static int bestDayOfMonth(int month) {
+    public static int bestDayOfMonth(int month) {//4
         if (month < 0 || month >= MONTHS) {
             return -1;
         }
@@ -154,7 +154,7 @@ public class Main {
 
    
     
-   public static String bestMonthForCommodity(String comm) {
+   public static String bestMonthForCommodity(String comm) {//5
         int commIndex = -1;
         for (int i = 0; i < COMMS; i++) {
             if (commodities[i].equals(comm)) {
@@ -190,7 +190,7 @@ public class Main {
 
     
     
-    public static int consecutiveLossDays(String comm) {
+    public static int consecutiveLossDays(String comm) {//6
         int commIndex = -1;
         for (int i = 0; i < COMMS; i++) {
             if (commodities[i].equals(comm)) {
@@ -229,7 +229,7 @@ public class Main {
 }
 
 
-public static int daysAboveThreshold(String comm, int threshold) {
+public static int daysAboveThreshold(String comm, int threshold) {//7
         int commIndex = -1;
         for (int i = 0; i < COMMS; i++) {
             if (commodities[i].equals(comm)) {
@@ -254,16 +254,44 @@ public static int daysAboveThreshold(String comm, int threshold) {
     }
 
 
-public static int biggestDailySwing(int month) {
-        return 1234;
-}
+ public static int biggestDailySwing(int month) {//8
+        if (month < 0 || month >= MONTHS) {
+            return -1;
+        }
+        int maxSwing = 0;
+        int previousDayProfit = 0;
+
+        for (int j = 0; j < COMMS; j++) {
+            previousDayProfit += profitData[month][0][j];
+        }
+
+        for (int i = 1; i < DAYS; i++) {
+            int currentDayProfit = 0;
+            for (int j = 0; j < COMMS; j++) {
+                currentDayProfit += profitData[month][i][j];
+            }
+            int difference = currentDayProfit - previousDayProfit;
+            int swing;
+
+            if (difference < 0) {//finding the absolute value
+                swing = difference * -1;
+            } else {
+                swing = difference;
+            }
+            if (swing > maxSwing) {
+                maxSwing = swing;
+            }
+            previousDayProfit = currentDayProfit;
+        }
+        return maxSwing;
+    }
 
 
-public static String compareTwoCommodities(String c1, String c2) {
+public static String compareTwoCommodities(String c1, String c2) {//9
         return "DUMMY is better by 1234";
 }
 
 
-public static String bestWeekOfMonth(int month) {
+public static String bestWeekOfMonth(int month) {//10
         return "DUMMY";
 }
