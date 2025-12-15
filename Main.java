@@ -327,6 +327,32 @@ public static String compareTwoCommodities(String c1, String c2) {//9
 }
 
 
-public static String bestWeekOfMonth(int month) {//10
-        return "DUMMY";
-}
+public static int bestWeekOfMonth(int month) {//10
+        if (month < 0 || month >= MONTHS) {
+            return -1;
+        }
+        long maxWeekProfit = Long.MIN_VALUE;
+        int bestWeekNumber = -1;
+
+        final int DAYS_PER_WEEK = 7;
+        final int NUM_WEEKS = 4;
+
+        for (int i = 0; i < NUM_WEEKS; i++) {
+            long currentWeekProfit = 0;
+
+            int startDayIndex = i * DAYS_PER_WEEK;
+            int endDayIndex = startDayIndex + DAYS_PER_WEEK;
+
+            for (int j = startDayIndex; j < endDayIndex; j++) {
+                for (int k = 0; k < COMMS; k++) {
+                    currentWeekProfit += profitData[month][j][k];
+                }
+            }
+
+            if (currentWeekProfit > maxWeekProfit) {
+                maxWeekProfit= currentWeekProfit;
+                bestWeekNumber = i + 1;
+            }
+        }
+        return bestWeekNumber;
+    }
