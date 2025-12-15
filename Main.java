@@ -288,7 +288,42 @@ public static int daysAboveThreshold(String comm, int threshold) {//7
 
 
 public static String compareTwoCommodities(String c1, String c2) {//9
-        return "DUMMY is better by 1234";
+        int commIndex1 = -1;
+        for (int i = 0; i < COMMS; i++) {
+            if (commodities[i].equals(c1)) {
+                commIndex1 = i;
+                break;
+            }
+        }
+        // Index for commodity 2
+        int commIndex2 = -1;
+        for (int i = 0; i < COMMS; i++) {
+            if (commodities[i].equals(c2)) {
+                commIndex2 = i;
+                break;
+            }
+        }
+        if (commIndex1 == -1 || commIndex2 == -1) {
+            return "INVALID_COMMODITY";
+        }
+
+        long comm1TotalProfit = 0;
+        long comm2TotalProfit = 0;
+
+        for (int i = 0; i < MONTHS; i++) {
+            for (int j = 0; j < DAYS; j++) {
+                comm1TotalProfit += profitData[i][j][commIndex1];
+                comm2TotalProfit += profitData[i][j][commIndex2];
+            }
+        }
+        //compare
+        if (comm1TotalProfit > comm2TotalProfit) {
+            return c1 + " vs. " + c2;
+        } else if (comm2TotalProfit > comm1TotalProfit) {
+            return c2 + " vs. " + c1;
+        } else {
+            return "EQUAL";
+        }
 }
 
 
