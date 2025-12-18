@@ -132,31 +132,18 @@ public class Main {
    
     
    public static String bestMonthForCommodity(String comm) {//5
-        int commIndex = -1;
-        for (int i = 0; i < COMMS; i++) {
-            if (commodities[i].equals(comm)) {
-                commIndex = i;
-                break;
-            }
-        }
+        int commIndex = getCommodityIndex(comm);
         if (commIndex == -1) {
             return "INVALID_COMMODITY";
         }
-        //1st month:
-        long firstMonthProfit = 0;
-        for (int j = 0; j < DAYS; j++) {
-            firstMonthProfit += profitData[0][j][commIndex];
-        }
+        long maxProfit = Long.MIN_VALUE;
+        String bestMonthName = "";
 
-        long maxProfit = firstMonthProfit;
-        String bestMonthName = months[0]; 
-
-        for (int i = 1; i < MONTHS; i++) {
+        for (int i = 0; i < MONTHS; i++) {
             long currentMonthProfit = 0;
-            for (int j = 0; j < DAYS; j++) {
+            for (int j = 0; j < DAYS; j++){
                 currentMonthProfit += profitData[i][j][commIndex];
             }
-
             if (currentMonthProfit > maxProfit) {
                 maxProfit = currentMonthProfit;
                 bestMonthName = months[i];
@@ -168,52 +155,28 @@ public class Main {
     
     
     public static int consecutiveLossDays(String comm) {//6
-        int commIndex = -1;
-        for (int i = 0; i < COMMS; i++) {
-            if (commodities[i].equals(comm)) {
-                commIndex = i;
-                break;
-            }
-        }
-        if (commIndex == -1) {
+        int commIndex = getCommodityIndex(comm);
+        if (commIndex == -1){
             return -1;
         }
-        int maxStreak = 0;
-        int currentStreak = 0;
+        int maxStreak = 0, currentStreak = 0;
 
-        //for 12 month:
         for (int m = 0; m < MONTHS; m++) {
-            //for 28 day
             for (int d = 0; d < DAYS; d++) {
-                int profit = profitData[m][d][commIndex]; 
-
-                if (profit < 0) {
+                if (profitData[m][d][commIndex] < 0) {
                     currentStreak++;
+                    if (currentStreak > maxStreak) maxStreak = currentStreak;
                 } else {
-                    if (currentStreak > maxStreak) {
-                        maxStreak = currentStreak;
-                    }
                     currentStreak = 0;
                 }
             }
         }
-        if (currentStreak > maxStreak) {
-            maxStreak = currentStreak;
-        }
-
         return maxStreak;
     }
-}
 
 
 public static int daysAboveThreshold(String comm, int threshold) {//7
-        int commIndex = -1;
-        for (int i = 0; i < COMMS; i++) {
-            if (commodities[i].equals(comm)) {
-                commIndex = i;
-                break;
-            }
-        }
+        int commIndex = getCommodityIndex(comm);
         if (commIndex == -1) {
             return -1;
         }
@@ -232,33 +195,21 @@ public static int daysAboveThreshold(String comm, int threshold) {//7
 
 
  public static int biggestDailySwing(int month) {//8
-        if (month < 0 || month >= MONTHS) {
-            return -1;
+        if (month < 0 || month >= MONTHS){
+            return -99999;
         }
         int maxSwing = 0;
-        int previousDayProfit = 0;
-
-        for (int j = 0; j < COMMS; j++) {
-            previousDayProfit += profitData[month][0][j];
-        }
-
-        for (int i = 1; i < DAYS; i++) {
-            int currentDayProfit = 0;
+        for (int i = 0; i < DAYS - 1; i++) {
+            int day1 = 0;
+            int day2 = 0;
             for (int j = 0; j < COMMS; j++) {
-                currentDayProfit += profitData[month][i][j];
+                day1 += profitData[month][i][j];
+                day2 += profitData[month][i + 1][j];
             }
-            int difference = currentDayProfit - previousDayProfit;
-            int swing;
-
-            if (difference < 0) {//finding the absolute value
-                swing = difference * -1;
-            } else {
-                swing = difference;
-            }
-            if (swing > maxSwing) {
+            int swing = Math.abs(day2 - day1);
+            if (swing > maxSwing){
                 maxSwing = swing;
             }
-            previousDayProfit = currentDayProfit;
         }
         return maxSwing;
     }
