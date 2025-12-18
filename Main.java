@@ -216,74 +216,53 @@ public static int daysAboveThreshold(String comm, int threshold) {//7
 
 
 public static String compareTwoCommodities(String c1, String c2) {//9
-        int commIndex1 = -1;
-        for (int i = 0; i < COMMS; i++) {
-            if (commodities[i].equals(c1)) {
-                commIndex1 = i;
-                break;
-            }
-        }
-        // Index for commodity 2
-        int commIndex2 = -1;
-        for (int i = 0; i < COMMS; i++) {
-            if (commodities[i].equals(c2)) {
-                commIndex2 = i;
-                break;
-            }
-        }
-        if (commIndex1 == -1 || commIndex2 == -1) {
+        int idx1 = getCommodityIndex(c1);
+        int idx2 = getCommodityIndex(c2);
+        if (idx1 == -1 || idx2 == -1) {
             return "INVALID_COMMODITY";
         }
-
-        long comm1TotalProfit = 0;
-        long comm2TotalProfit = 0;
-
-        for (int i = 0; i < MONTHS; i++) {
-            for (int j = 0; j < DAYS; j++) {
-                comm1TotalProfit += profitData[i][j][commIndex1];
-                comm2TotalProfit += profitData[i][j][commIndex2];
+        long p1 = 0;
+        long p2 = 0;
+        for (int m = 0; m < MONTHS; m++) {
+            for (int d = 0; d < DAYS; d++) {
+                p1 += profitData[m][d][idx1];
+                p2 += profitData[m][d][idx2];
             }
         }
-        //compare
-        if (comm1TotalProfit > comm2TotalProfit) {
-            return c1 + " vs. " + c2;
-        } else if (comm2TotalProfit > comm1TotalProfit) {
-            return c2 + " vs. " + c1;
-        } else {
-            return "EQUAL";
+        long diff = Math.abs(p1 - p2);
+
+        if (p1 > p2){
+            return c1 + " is better by " + diff;
         }
-}
+        else if (p2 > p1){
+            return c2 + " is better by " + diff;
+        }
+        else return "Equal";
+    }
 
 
 public static int bestWeekOfMonth(int month) {//10
-        if (month < 0 || month >= MONTHS) {
-            return -1;
+        if (month < 0 || month >= MONTHS){
+            return "INVALID_MONTH";
         }
         long maxWeekProfit = Long.MIN_VALUE;
-        int bestWeekNumber = -1;
-
-        final int DAYS_PER_WEEK = 7;
-        final int NUM_WEEKS = 4;
-
-        for (int i = 0; i < NUM_WEEKS; i++) {
+        int bestWeekNumber = 1;
+        for (int i = 0; i < 4; i++) {
             long currentWeekProfit = 0;
-
-            int startDayIndex = i * DAYS_PER_WEEK;
-            int endDayIndex = startDayIndex + DAYS_PER_WEEK;
-
-            for (int j = startDayIndex; j < endDayIndex; j++) {
+            for (int j = i * 7; j < (i + 1) * 7; j++) {
                 for (int k = 0; k < COMMS; k++) {
                     currentWeekProfit += profitData[month][j][k];
                 }
             }
-
             if (currentWeekProfit > maxWeekProfit) {
-                maxWeekProfit= currentWeekProfit;
+                maxWeekProfit = currentWeekProfit;
                 bestWeekNumber = i + 1;
             }
         }
-        return bestWeekNumber;
+        return "Week " + bestWeekNumber;
     }
+
+    
 public static void main(String[] args) {
         loadData();
         System.out.println("Data loaded – ready for queries");
