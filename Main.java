@@ -20,10 +20,7 @@ public class Main {
         }
         return -1;
     }
-
-    private static boolean isInvalidMonth(int month) {
-        return month < 0 || month >= MONTHS;
-    }
+    
 
     public static void loadData() {
         try {
@@ -31,8 +28,10 @@ public class Main {
             for (int i = 0; i < MONTHS; i++) {
                 String filename = "Data_Files/" + months[i] + ".txt";
 
-                Scanner sc = new Scanner(new File(filename));//???
+                File file = new File(filename);
+                if (!file.exists()) continue;
 
+                Scanner sc = new Scanner(file);
                 if (sc.hasNextLine()) {
                     sc.nextLine();
                 }
@@ -47,22 +46,15 @@ public class Main {
                     String commodityName = parts[1].trim();
                     int profit = Integer.parseInt(parts[2].trim());
 
-                    int commIndex = -1;
-                    for (int c = 0; c < COMMS; c++) {
-                        if (commodities[c].equals(commodityName)) {
-                            commIndex = c;
-                            break;
-                        }
-                    }
-
+                    int commIndex = getCommodityIndex(commodityName);
                     if (commIndex != -1 && day >= 1 && day <= DAYS) {
-                        int dayIndex = day - 1;
-                        profitData[i][dayIndex][commIndex] = profit;
+                        profitData[i][day - 1][commIndex] = profit;
                     }
                 }
+                sc.close();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found or I/O error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
     // 10 REQUIRED METHODS
@@ -356,3 +348,8 @@ public static int bestWeekOfMonth(int month) {//10
         }
         return bestWeekNumber;
     }
+public static void main(String[] args) {
+        loadData();
+        System.out.println("Data loaded – ready for queries");
+    }
+}
