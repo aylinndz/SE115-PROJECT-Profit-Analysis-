@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import java.util.Scanner;
 
 public class Main {
     static final int MONTHS = 12;
@@ -41,7 +40,7 @@ public class Main {
 
                     if (parts.length != 3) continue;
 
-                    //?
+                    
                     int day = Integer.parseInt(parts[0].trim());
                     String commodityName = parts[1].trim();
                     int profit = Integer.parseInt(parts[2].trim());
