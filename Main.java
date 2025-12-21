@@ -26,7 +26,7 @@ public class Main {
         try {
             // for 12month
             for (int i = 0; i < MONTHS; i++) {
-                String filename = "Months/" + months[i] + ".txt";
+                String filename = "Data_Files/" + months[i] + ".txt";
 
                 File file = new File(filename);
                 if (!file.exists()) continue;
